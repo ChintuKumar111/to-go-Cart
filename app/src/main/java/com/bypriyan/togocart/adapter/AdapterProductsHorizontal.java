@@ -275,7 +275,7 @@ public class AdapterProductsHorizontal extends RecyclerView.Adapter<AdapterProdu
         itemId++;
 
         preferenceManager.putString(Constant.KEY_ITEM_ID,""+itemId);
-        ((HomeFragment) fragment).cartCount();
+        ((HomeFragment)fragment).cartCount();
         ((MainActivity)context).allTotalPrise = 0.0;
         ((MainActivity)context).showData();
     }

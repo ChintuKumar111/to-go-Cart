@@ -10,7 +10,6 @@ import com.bypriyan.togocart.activity.MainActivity;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 public class SplashScreen extends AppCompatActivity {
-
     private static int splashScreen = 1500;
 
     @Override

@@ -250,8 +250,16 @@ public class AdapterProductsGrid extends RecyclerView.Adapter<AdapterProductsGri
 
     private int itemId= 1;
     private void addToCart(String productId, String pName, String totalPrise, String sellingPriseEach, String totalProductQuentity, String productImage, String productQuentityWithMeasuring) {
-        itemId = Integer.parseInt(preferenceManager.getString(Constant.KEY_ITEM_ID));
+        String savedItemId = preferenceManager.getString(Constant.KEY_ITEM_ID);
+
+        if (savedItemId == null || savedItemId.isEmpty()) {
+            itemId = 1; // first item
+        } else {
+            itemId = Integer.parseInt(savedItemId);
+        }
+
         itemId++;
+
         EasyDB easyDB = EasyDB.init(context, "ITEMS_DB")
                 .setTableName("ITEMS_TABLE")
                 .addColumn(new Column("ITEM_ID", new String[]{"text", "unique"}))

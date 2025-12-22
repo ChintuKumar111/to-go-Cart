@@ -1,5 +1,7 @@
 package com.bypriyan.togocart.activity;
 
+import static com.google.android.gms.auth.GoogleAuthUtil.getToken;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +16,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -33,6 +36,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -122,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        getToken();
+       // getToken();
         loadMessage();
 
     }
@@ -149,12 +153,20 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void getToken(){
-        FirebaseMessaging.getInstance().getToken().addOnSuccessListener(this::UpdateToken );
-    }
     private void UpdateToken(String token) {
-        String uid= FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Constant.KEY_TOKENSUSER);
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user == null) {
+            Log.e("UpdateToken", "Firebase user is null. Token not updated.");
+            return;
+        }
+
+        String uid = user.getUid();
+
+        DatabaseReference reference =
+                FirebaseDatabase.getInstance().getReference(Constant.KEY_TOKENSUSER);
+
         Token token1 = new Token(token);
         reference.child(uid).setValue(token1);
     }
